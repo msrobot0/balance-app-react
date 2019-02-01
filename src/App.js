@@ -50,11 +50,17 @@ class App extends Component {
          var err,wei = await web3.eth.getBalance(this.state.account);
          this.setState({eth:web3.utils.fromWei(wei)});
          this.setState({balance:contractinfo.methods.balanceOf(accounts[0])});
-         this.setState({totalsupply:contractinfo.methods.totalSupply()});
+         this.setState({totalsupply:Number(contractinfo.methods.totalSupply())});
+         var v = await contractinfo.methods.balanceOf(accounts[0]).call();
+         var q = await contractinfo.methods.totalSupply().call();
+        alert(q);
+
+       contractinfo.methods.totalSupply().call().then(function(res){
+    console.log(res);
+}).catch(function(err) {
+});
 		const ethAddress= await contractinfo.options.address;
 		this.setState({wha:ethAddress});
-         const total = await contractinfo.methods.totalSupply().call().then(console.log);
-        alert("hi")
        //contract.methods.transfer(toAddress, value).send({from: fromAddress})
 //.on('transactionHash', function(hash){
  // console.log(hash);
