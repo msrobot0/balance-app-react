@@ -23,7 +23,8 @@ class App extends Component {
       eth:0,
       totalsupply:0,
       wha:null,
-      balance:0
+      balance:0,
+      web3:false
     };
     web3.eth.net.isListening().then(this.state.isConnected = true)
   }
@@ -34,7 +35,10 @@ class App extends Component {
 
    componentDidMount() {
         if (typeof web3 !== 'undefined') {
-            alert("Install Metamask");
+              this.setState({web3:false});
+        }else{
+              this.setState({web3:true});
+
         }
 
    }
@@ -43,7 +47,7 @@ class App extends Component {
    if (!(window.ethereum || window.web3)){
     web3 = null
     this.setState({isConnected:false});
-    alert('You have to install MetaMask !');
+              this.setState({web3:true});
     }else{
         //web3.eth.getAccounts().then(function(results){this.setState({account:results[0]}),this.setState({account:''})});
     }
@@ -82,7 +86,7 @@ class App extends Component {
   render() {
     const { classes } = this.props;
     const { spacing } = this.state;
-
+    if (this.state.web3){
     return (
       <div className="App" className="App-header">
         <h1>Get Balance</h1>
@@ -152,6 +156,17 @@ class App extends Component {
     </p>
       </div>
     );
+
+
+  }else{
+    return (
+      <div className="App" className="App-header">
+        <h1>Get Balance</h1>
+        <h3>To use Balance please install <a href="https://metamask.io">Metamask</a> and get some ropsten either</h3>
+        </div>
+    );
+  }
+
   }
 }
 
