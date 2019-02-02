@@ -78,46 +78,42 @@ class App extends Component {
     const { spacing } = this.state;
 
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            get BALANCE
-          </p>
-        <h3>Your Balance Stats</h3>
+      <div className="App" className="App-header">
+        <h1>Get Balance</h1>
         <p>{this.state.isConnected?'You are connected to Ropsten test network':'You are not connected'}</p>
+        <Button  variant="contained" color="primary"  onClick={() => this.metamaskLogin()}>
+        Connect your account via metamask
+        </Button>
+
         <Grid container spacing={16}>
         <Grid item xs={12}>
           <Grid container  justify="center" spacing={Number(spacing)}>
               <Grid>
-                <Paper>
-                    <Typography variant="h5" component="h3">
-                            <p>
-                            Total Balance Tokens: {this.state.totalsupply}
-                            </p>
-                    </Typography>
-                </Paper>
-                <Paper>
-                    <Typography variant="h5" component="h3">
-                            <p>
-                            ETH Tokens: {this.state.eth}
-                            </p>
-                    </Typography>
-                </Paper>
-                <Paper>
                     <Typography variant="h5" component="h3">
                             <p>
                             Balance Wallet Address: {this.state.account}
                             </p>
                     </Typography>
-                </Paper>
-                <Paper>
+        </Grid>
+        <Grid>
                     <Typography variant="h5" component="h3">
                             <p>
-                            Eth Wallet Address: {this.state.wha}
+                            Total Balance Tokens: {this.state.totalsupply}
                             </p>
                     </Typography>
-                </Paper>
+        </Grid>
+        </Grid>
+
+          <Grid container  justify="center" spacing={Number(spacing)}>
+        <Grid>
+                            ETH Tokens:</Grid><Grid> {this.state.eth}
+        </Grid>
+        <Grid>
+                            Eth Wallet Address:</Grid><Grid> {this.state.wha}
+        </Grid>
+        </Grid>
+          <Grid container  justify="center" spacing={Number(spacing)}>
+        <Grid>
                 <Paper>
                     <Typography variant="h5" component="h3">
                             <p>
@@ -129,12 +125,16 @@ class App extends Component {
           </Grid>
         </Grid>
         </Grid>
-        <Button variant="outlined"  onClick={() => this.metamaskLogin()}>
-          breathe
+        <h3>What did you do?</h3>
+
+        <Button variant="contained" onClick={() => this.metamaskLogin()}>
+          meditate
         </Button>
-        <Button variant="outlined">
-         Social Media
+        OR
+        <Button variant="contained" onClick={() => this.metamaskLogin()}>
+         Like stuff on Social Media
         </Button>
+        <p>
           <a
             className="App-link"
             href="https://github.com/consciouscomputation"
@@ -143,7 +143,7 @@ class App extends Component {
           >
             Computer Tooling Consciousness
           </a>
-        </header>
+    </p>
       </div>
     );
   }

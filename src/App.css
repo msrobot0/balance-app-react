@@ -7,7 +7,12 @@
 }
 
 .App-header {
-  background-color: #282c34;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#cedbe9+0,aac5de+13,3a84c3+32,4bb8f0+53,419ad6+65,419ad6+65,3a8bc2+84,26558b+100 */
+background: #cedbe9; /* Old browsers */
+background: -moz-linear-gradient(-45deg, #cedbe9 0%, #aac5de 13%, #3a84c3 32%, #4bb8f0 53%, #419ad6 65%, #419ad6 65%, #3a8bc2 84%, #26558b 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(-45deg, #cedbe9 0%,#aac5de 13%,#3a84c3 32%,#4bb8f0 53%,#419ad6 65%,#419ad6 65%,#3a8bc2 84%,#26558b 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(135deg, #cedbe9 0%,#aac5de 13%,#3a84c3 32%,#4bb8f0 53%,#419ad6 65%,#419ad6 65%,#3a8bc2 84%,#26558b 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cedbe9', endColorstr='#26558b',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -18,14 +23,6 @@
 }
 
 .App-link {
-  color: #61dafb;
+  color: #CCC;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
