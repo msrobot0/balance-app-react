@@ -32,6 +32,12 @@ class App extends Component {
 		event.preventDefault();
   };
 
+   componentDidMount() {
+        if (typeof web3 !== 'undefined') {
+            alert("Install Metamask");
+        }
+
+   }
    componentWillMount() {
 
    if (!(window.ethereum || window.web3)){
