@@ -19,11 +19,11 @@ class App extends Component {
       txReceipt: '' ,
       value: null,
       isConnected:false,
-      account:null,
-      eth:0,
+      b_account:null,
+      e_account:null,
+      e_amount:0,
       totalsupply:0,
-      wha:null,
-      balance:0,
+      b_amount:0,
       web3:false
     };
     web3.eth.net.isListening().then(this.state.isConnected = true)
@@ -33,44 +33,41 @@ class App extends Component {
 		event.preventDefault();
   };
 
-   componentDidMount() {
-        if (typeof web3 !== 'undefined') {
-              this.setState({web3:false});
-        }else{
-              this.setState({web3:true});
-
-        }
-
-   }
    componentWillMount() {
+        if (typeof web3.web3 !== 'undefined') {
 
+              this.setState({web3:false});
+    this.setState({isConnected:false});
+        }else{
    if (!(window.ethereum || window.web3)){
     web3 = null
     this.setState({isConnected:false});
-              this.setState({web3:true});
     }else{
+    this.setState({isConnected:true});
+              this.setState({web3:true});
         //web3.eth.getAccounts().then(function(results){this.setState({account:results[0]}),this.setState({account:''})});
     }
   }
+}
 
    metamaskLogin = async (event) => {
 		const accounts = await web3.eth.getAccounts();
+        const b_account = accounts[0];
+	    const e_account= await contractinfo.options.address;
 
-         this.setState({account:accounts[0]});
-         var err,wei = await web3.eth.getBalance(this.state.account);
-         this.setState({eth:web3.utils.fromWei(wei)});
-         this.setState({balance:contractinfo.methods.balanceOf(accounts[0])});
-         this.setState({totalsupply:Number(contractinfo.methods.totalSupply())});
-         var v = await contractinfo.methods.balanceOf(accounts[0]).call();
-         var q = await contractinfo.methods.totalSupply().call();
-        alert(q);
+         this.setState({b_account:b_account});
+         var err,wei = await web3.eth.getBalance(b_account);
+         var err,wei2 = await contractinfo.methods.balanceOf(b_account).call();
+         var err,blak = await contractinfo.methods.increaseSupply(3).call();
+         var err,total = await contractinfo.methods.totalSupply().call();
+         this.setState({b_amount:wei2});
+         this.setState({e_account:wei});
+         this.setState({totalsupply:total});
+         //var v = await contractinfo.methods.balanceOf(accounts[0]).call();
+		//his.setState({e_account:contract_address});
 
-       contractinfo.methods.totalSupply().call().then(function(res){
-    console.log(res);
-}).catch(function(err) {
-});
-		const ethAddress= await contractinfo.options.address;
-		this.setState({wha:ethAddress});
+       //var r = await contractinfo.methods.totalSupply({from:contract_address}).call();
+        // this.setState({totalsupply:Number(r)});
        //contract.methods.transfer(toAddress, value).send({from: fromAddress})
 //.on('transactionHash', function(hash){
  // console.log(hash);
@@ -101,7 +98,7 @@ class App extends Component {
               <Grid>
                     <Typography variant="h5" component="h3">
                             <p>
-                            Balance Wallet Address: {this.state.account}
+                            Balance Wallet Address: {this.state.b_account}
                             </p>
                     </Typography>
         </Grid>
@@ -116,21 +113,14 @@ class App extends Component {
 
           <Grid container  justify="center" spacing={Number(spacing)}>
         <Grid>
-                            ETH Tokens:</Grid><Grid> {this.state.eth}
         </Grid>
         <Grid>
-                            Eth Wallet Address:</Grid><Grid> {this.state.wha}
+                            Eth Wallet Address:</Grid><Grid> {this.state.e_account}
         </Grid>
         </Grid>
           <Grid container  justify="center" spacing={Number(spacing)}>
         <Grid>
-                <Paper>
-                    <Typography variant="h5" component="h3">
-                            <p>
-                            Balance Tokens {this.state.balance}
-                            </p>
-                    </Typography>
-                </Paper>
+                            Balance Tokens {this.state.b_amount}
               </Grid>
           </Grid>
         </Grid>
