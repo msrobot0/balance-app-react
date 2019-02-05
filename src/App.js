@@ -1,33 +1,16 @@
 import React, { Component } from 'react';
-import { createMuiTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import logo from './meditation.jpeg';
 import './App.css';
 import web3 from './web3';
 import contractinfo from './contractinfo';
 import {grey, amber, blue} from '@material-ui/core/colors'
-const theme = createMuiTheme({
-  palette: {
-    primary: blue,
-  },
-});
 
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-  },
-  paper: {
-    padding: theme.spacing.unit,
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-});
 
 class App extends Component {
 
@@ -49,26 +32,20 @@ class App extends Component {
     web3.eth.net.isListening().then(this.state.isConnected = true);
   };
 
-  onSubmit = async (event) => {
-		event.preventDefault();
-  };
-
    componentWillMount() {
         if (typeof web3.web3 !== 'undefined') {
-
               this.setState({web3:false});
-    this.setState({isConnected:false});
+              this.setState({isConnected:false});
         }else{
-   if (!(window.ethereum || window.web3)){
-    web3 = null
-    this.setState({isConnected:false});
-    }else{
-    this.setState({isConnected:true});
-              this.setState({web3:true});
-        //web3.eth.getAccounts().then(function(results){this.setState({account:results[0]}),this.setState({account:''})});
+                if (!(window.ethereum || window.web3)){
+                    web3 = null
+                    this.setState({isConnected:false});
+                }else{
+                    this.setState({isConnected:true});
+                    this.setState({web3:true});
+                }
+        }
     }
-  }
-}
 
    transfer = async (event) => {
        try{
@@ -91,32 +68,17 @@ class App extends Component {
 		const accounts = await web3.eth.getAccounts();
         const b_account = accounts[0];
 	    const e_account= await contractinfo.options.address;
-
-         this.setState({b_account:b_account});
-         var err,wei = await web3.eth.getBalance(b_account);
-         var err,wei2 = await contractinfo.methods.balanceOf(b_account).call();
          var err,total = await contractinfo.methods.totalSupply().call();
+         var err,wei = await web3.eth.getBalance(e_account);
+         var err,wei2 = await contractinfo.methods.balanceOf(b_account).call();
          this.setState({b_amount:wei2});
-         this.setState({e_account:wei});
+         this.setState({e_amount:wei});
+         this.setState({e_account:e_account});
+         this.setState({b_account:b_account});
          this.setState({totalsupply:total});
-         //var v = await contractinfo.methods.balanceOf(accounts[0]).call();
-		//his.setState({e_account:contract_address});
-
-       //var r = await contractinfo.methods.totalSupply({from:contract_address}).call();
-        // this.setState({totalsupply:Number(r)});
-       //contract.methods.transfer(toAddress, value).send({from: fromAddress})
-//.on('transactionHash', function(hash){
- // console.log(hash);
-//});
-         //contractinfo.methods.increaseSupply(4);
-         //const contract = await contractinfo.options['address'];
-     //  console.log(contract);
-         //contractinfo.methods.approve(contract,10);
-
-
-
        }catch(e){
-        this.setState({web3:false});
+           console.log(e);
+           this.setState({web3:false});
 
        }
    }
@@ -130,10 +92,12 @@ class App extends Component {
       <div className="App" className="App-header">
         <h1>Get Balance</h1>
         <p>{this.state.isConnected?'You are connected to Ropsten test network':'You are not connected'}</p>
-        <center>
         <Grid container spacing={8}>
             <Grid container item xs={12} spacing={24}>
-              <Grid item xs={6}>
+
+              <Grid item xs={4}>
+              </Grid>
+              <Grid item xs={2}>
                     Balance Wallet
                </Grid>
               <Grid item xs={6}>
@@ -142,7 +106,9 @@ class App extends Component {
             </Grid>
 
             <Grid container item xs={12} spacing={24}>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
+              </Grid>
+              <Grid item xs={2}>
                     Balance Tokens
                </Grid>
               <Grid item xs={6}>
@@ -151,7 +117,9 @@ class App extends Component {
             </Grid>
 
             <Grid container item xs={12} spacing={24}>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
+              </Grid>
+              <Grid item xs={2}>
                     Total Supply
                </Grid>
               <Grid item xs={6}>
@@ -159,30 +127,40 @@ class App extends Component {
               </Grid>
             </Grid>
             <Grid container item xs={12} spacing={24}>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
+              </Grid>
+              <Grid item xs={2}>
                     Ethereum Wallet
                </Grid>
               <Grid item xs={6}>
-                    {this.state.e_account}
+            <p> {this.state.e_account}</p>
               </Grid>
             </Grid>
         </Grid>
+        <div>
                     <Button color="primary" variant="contained" onClick={() => this.increase()}>
                         meditate
                     </Button>
                     <Button color="primary" variant="contained" onClick={() => this.decrease()}>
                         social media
                     </Button>
-                    <p>Send someone balance!</p>
-                  <TextField
-                    onChange={(e) => this.transfer(e)}
-                    id="standard-name"
-                    label="Address"
-                     value={this.state.to_address}
-                    margin="normal"
-                  />
-        </center>
-        <p>
+                    <p>
+                          <div>Now... send someone balance!</div>
+                          <TextField
+                            onChange={(e) => this.transfer(e)}
+                            id="standard-name"
+                            label="Address"
+                             value={this.state.to_address}
+                            margin="normal"
+                          />
+                    </p>
+        </div>
+        <div>
+        <Button  variant="contained" color="primary"  onClick={() => this.metamaskLogin()}>
+        Reconnect or connect to another account  via metamask
+        </Button>
+        </div>
+        <div>
           <a
             className="App-link"
             href="https://github.com/consciouscomputation"
@@ -191,7 +169,7 @@ class App extends Component {
           >
             Computer Tooling Consciousness
           </a>
-    </p>
+    </div>
       </div>
     );
 
